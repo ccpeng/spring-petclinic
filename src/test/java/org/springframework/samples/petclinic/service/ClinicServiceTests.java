@@ -223,7 +223,7 @@ public class ClinicServiceTests {
         Collection<Visit> visits = this.visits.findByPetId(7);
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
-        assertThat(visitArr[0].getDate()).isNotNull();
+        assertThat(visitArr[0].getDateTime()).isNotNull();
         assertThat(visitArr[0].getPetId()).isEqualTo(7);
     }
 

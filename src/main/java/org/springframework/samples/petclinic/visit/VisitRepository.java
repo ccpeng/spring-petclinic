@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.visit;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public interface VisitRepository extends Repository<Visit, Integer> {
     void save(Visit visit) throws DataAccessException;
 
     List<Visit> findByPetId(Integer petId);
+
+    List<Visit> findByVetIdAndDateTime(Integer vetId, LocalDateTime dateTime);
 
     @Transactional(readOnly = true)
     Collection<Visit> findAll() throws DataAccessException;

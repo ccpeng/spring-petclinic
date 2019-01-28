@@ -22,7 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
@@ -36,7 +35,6 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 public class Visit extends BaseEntity {
 
     @Column(name = "visit_time")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dateTime;
 
     @NotEmpty
@@ -49,18 +47,12 @@ public class Visit extends BaseEntity {
     @Column(name = "vet_id")
     private Integer vetId;
 
-    /**
-     * Creates a new instance of Visit for the current date
-     */
-    public Visit() {
-        this.dateTime = LocalDateTime.now();
-    }
 
-    public LocalDateTime getDate() {
+    public LocalDateTime getDateTime() {
         return this.dateTime;
     }
 
-    public void setDate(LocalDateTime dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

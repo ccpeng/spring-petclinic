@@ -16,6 +16,9 @@
 package org.springframework.samples.petclinic.owner;
 
 import java.util.Collection;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.exception.PetClinicException;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -90,6 +93,30 @@ class VisitController {
     public @ResponseBody Iterable<Visit> getAllVisits() {
         Collection<Visit> results = this.visits.findAll();
         return results;
+    }
+
+    @GetMapping({ "visits/findByPetId/{petId}" })
+    public @ResponseBody Iterable<Visit> getVisitsByPetId(@PathVariable("petId") int petId) {
+        Collection<Visit> results = this.visits.findByPetId(petId);
+        return results;
+    }
+
+    @PostMapping({ "visits/addAppointment" })
+    @ResponseBody
+    public ResponseEntity addAppointment(@Valid @RequestBody Visit visit, BindingResult result) {
+        if (!result.hasErrors()) {
+
+            Collection<Visit> existingAppointments = this.visits.findByVetIdAndDateTime(visit.getVetId(), visit.getDateTime());
+
+            if (existingAppointments.size() == 0) {
+                this.visits.save(visit);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                throw new PetClinicException("Appointment already exists for this vet at this time.");
+            }
+        }
+
+        throw new PetClinicException("Appointment request malformed");
     }
 
 }
