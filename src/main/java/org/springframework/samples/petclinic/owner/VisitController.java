@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collection;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -59,14 +60,14 @@ class VisitController {
      * @param petId
      * @return Pet
      */
-    @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-        Pet pet = this.pets.findById(petId);
-        model.put("pet", pet);
-        Visit visit = new Visit();
-        pet.addVisit(visit);
-        return visit;
-    }
+//    @ModelAttribute("visit")
+//    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+//        Pet pet = this.pets.findById(petId);
+//        model.put("pet", pet);
+//        Visit visit = new Visit();
+//        pet.addVisit(visit);
+//        return visit;
+//    }
 
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
     @GetMapping("/owners/*/pets/{petId}/visits/new")
@@ -83,6 +84,12 @@ class VisitController {
             this.visits.save(visit);
             return "redirect:/owners/{ownerId}";
         }
+    }
+
+    @GetMapping({ "/visits/all" })
+    public @ResponseBody Iterable<Visit> getAllVisits() {
+        Collection<Visit> results = this.visits.findAll();
+        return results;
     }
 
 }
