@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -128,6 +131,35 @@ class OwnerController {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
         mav.addObject(this.owners.findById(ownerId));
         return mav;
+    }
+
+    @GetMapping({ "/owners/all" })
+    public @ResponseBody Iterable<SimpleOwner> getAllOwners() {
+        Collection<Owner> results = this.owners.findByLastName("");
+        Collection<SimpleOwner> simplifiedResults = new ArrayList<>();
+
+        results.forEach((owner) -> {
+            SimpleOwner simpleOwner = new SimpleOwner();
+            List<SimplePet> listOfPets = new ArrayList<>();
+            simpleOwner.setId(owner.getId());
+            simpleOwner.setFirstName(owner.getFirstName());
+            simpleOwner.setLastName(owner.getLastName());
+
+            List<Pet> petList = owner.getPets();
+            petList.stream()
+                .filter(pet -> pet.getOwner().getId() == owner.getId())
+                .forEach(pet -> {
+                    SimplePet simplePet = new SimplePet();
+                    simplePet.setId(pet.getId());
+                    simplePet.setName(pet.getName());
+                    listOfPets.add(simplePet);
+                });
+
+            simpleOwner.setListOfPets(listOfPets);
+            simplifiedResults.add(simpleOwner);
+        });
+
+        return simplifiedResults;
     }
 
 }
