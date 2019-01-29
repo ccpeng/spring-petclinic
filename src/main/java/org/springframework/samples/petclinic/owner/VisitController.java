@@ -15,10 +15,12 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.samples.petclinic.exception.PetClinicException;
+import org.springframework.samples.petclinic.exception.PetClinicException400;
+import org.springframework.samples.petclinic.exception.PetClinicException409;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -101,6 +103,13 @@ class VisitController {
         return results;
     }
 
+//    @GetMapping({ "visits/findByVetIdAndDateTime" })
+//    public @ResponseBody Iterable<Visit> getVisitsByVetIdAndDateTime(@RequestParam("vetId") int vetId,
+//        @RequestParam("dateTime") LocalDateTime dateTime) {
+//        Collection<Visit> results = this.visits.findByVetIdAndDateTime(vetId, dateTime);
+//        return results;
+//    }
+
     @PostMapping({ "visits/addAppointment" })
     @ResponseBody
     public ResponseEntity addAppointment(@Valid @RequestBody Visit visit, BindingResult result) {
@@ -110,13 +119,13 @@ class VisitController {
 
             if (existingAppointments.size() == 0) {
                 this.visits.save(visit);
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.CREATED);
             } else {
-                throw new PetClinicException("Appointment already exists for this vet at this time.");
+                throw new PetClinicException409("Appointment already exists for this vet at this time.");
             }
         }
 
-        throw new PetClinicException("Appointment request malformed");
+        throw new PetClinicException400("Appointment request malformed");
     }
 
 }

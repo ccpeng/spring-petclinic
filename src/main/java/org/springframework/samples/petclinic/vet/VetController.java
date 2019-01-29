@@ -15,10 +15,15 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.MediaType;
 
 import java.util.Map;
 
@@ -56,7 +61,7 @@ class VetController {
         return vets;
     }
 
-    @GetMapping({ "/vets/all" })
+    @GetMapping(value = { "/vets/all" }, produces = { "application/json" })
     public @ResponseBody Iterable<Vet> getAllVets() {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for JSon/Object mapping
