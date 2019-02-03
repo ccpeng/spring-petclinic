@@ -103,12 +103,20 @@ class VisitController {
         return results;
     }
 
-//    @GetMapping({ "visits/findByVetIdAndDateTime" })
-//    public @ResponseBody Iterable<Visit> getVisitsByVetIdAndDateTime(@RequestParam("vetId") int vetId,
-//        @RequestParam("dateTime") LocalDateTime dateTime) {
-//        Collection<Visit> results = this.visits.findByVetIdAndDateTime(vetId, dateTime);
-//        return results;
-//    }
+
+    @GetMapping({ "visits/findByVetIdAndPetId" })
+    public @ResponseBody Iterable<Visit> getVisitsByVetIdAndPetId(@RequestParam("vetId") int vetId,
+        @RequestParam("petId") int petId) {
+        Collection<Visit> results = this.visits.findByVetIdAndPetId(vetId, petId);
+        return results;
+    }
+
+    @DeleteMapping({ "visits/cancelAppointment/{id}" })
+    @ResponseBody
+    public ResponseEntity deleteAppointment(@PathVariable("id") int id) {
+        this.visits.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping({ "visits/addAppointment" })
     @ResponseBody

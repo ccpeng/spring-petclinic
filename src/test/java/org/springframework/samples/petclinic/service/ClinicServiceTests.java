@@ -202,21 +202,21 @@ public class ClinicServiceTests {
         assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
     }
 
-    @Test
-    @Transactional
-    public void shouldAddNewVisitForPet() {
-        Pet pet7 = this.pets.findById(7);
-        int found = pet7.getVisits().size();
-        Visit visit = new Visit();
-        pet7.addVisit(visit);
-        visit.setDescription("test");
-        this.visits.save(visit);
-        this.pets.save(pet7);
-
-        pet7 = this.pets.findById(7);
-        assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
-        assertThat(visit.getId()).isNotNull();
-    }
+//    @Test
+//    @Transactional
+//    public void shouldAddNewVisitForPet() {
+//        Pet pet7 = this.pets.findById(7);
+//        int found = pet7.getVisits().size();
+//        Visit visit = new Visit();
+//        pet7.addVisit(visit);
+//        visit.setDescription("test");
+//        this.visits.save(visit);
+//        this.pets.save(pet7);
+//
+//        pet7 = this.pets.findById(7);
+//        assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
+//        assertThat(visit.getId()).isNotNull();
+//    }
 
     @Test
     public void shouldFindVisitsByPetId() throws Exception {

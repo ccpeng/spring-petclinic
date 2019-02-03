@@ -47,6 +47,10 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 
     List<Visit> findByVetIdAndDateTime(Integer vetId, LocalDateTime dateTime);
 
+    List<Visit> findByVetIdAndPetId(Integer vetId, Integer petId);
+
+    void deleteById(Integer id) throws DataAccessException;
+
     @Transactional(readOnly = true)
     Collection<Visit> findAll() throws DataAccessException;
 
